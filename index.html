@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		function loadImage(url){
+			return new Promise(function(resolve,reject){
+				let xml = new XMLHttpRequest();
+				xml.open('GET',url);
+				xml.onreadystatechange=function(){
+					if(xml.readyState!==4)return
+					if(xml.status===200){
+						resolve(xml.responseText)
+					}else{
+						reject('error')
+					}
+				}
+					xml.send(null)
+			});
+		}
+		loadImage('http://localhost:8080/imgs').then(function(result){
+			var arr=JSON.parse(result)
+			console.log(arr);
+			[...arr].map(function(item,index){
+				console.log(item)
+				var image= new Image();
+				image.src=item.img;
+				document.body.append(image)
+			})
+
+		})
+	</script>
+</body>
+</html>
